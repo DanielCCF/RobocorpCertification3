@@ -7,6 +7,10 @@ Library             RPA.Tables
 Library             RPA.JSON
 
 
+*** Variables ***
+${TRAFFIC_JSON_FILE_PATH}=      ${OUTPUT_DIR}${/}traffic.json
+
+
 *** Tasks ***
 Produce traffic data work items
     Download traffic data
@@ -18,10 +22,10 @@ Produce traffic data work items
 Download traffic data
     Download
     ...    https://github.com/robocorp/inhuman-insurance-inc/raw/main/RS_198.json
-    ...    ${OUTPUT_DIR}${/}traffic.json
+    ...    ${TRAFFIC_JSON_FILE_PATH}
     ...    overwrite=True
 
 Load traffic data as table
-    ${json}=    Load JSON from file    ${OUTPUT_DIR}${/}traffic.json
+    ${json}=    Load JSON from file    ${TRAFFIC_JSON_FILE_PATH}
     ${table}=    Create Table    ${json}[value]
     RETURN    ${table}
