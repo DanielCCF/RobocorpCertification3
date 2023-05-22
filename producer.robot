@@ -15,7 +15,7 @@ ${TRAFFIC_JSON_FILE_PATH}=      ${OUTPUT_DIR}${/}traffic.json
 Produce traffic data work items
     Download traffic data
     ${traffic_data}=    Load traffic data as table
-    Write Table To Csv    ${traffic_data}    ${OUTPUT_DIR}${/}test.csv
+    ${filtered_data}=    Filter and sort traffic data    ${traffic_data}
 
 
 *** Keywords ***
@@ -28,4 +28,11 @@ Download traffic data
 Load traffic data as table
     ${json}=    Load JSON from file    ${TRAFFIC_JSON_FILE_PATH}
     ${table}=    Create Table    ${json}[value]
+    RETURN    ${table}
+
+Filter and sort traffic data
+    [Arguments]    ${table}
+    Filter Table By Column    ${table}    NumericValue    <    ${5.0}
+    Filter Table By Column    ${table}    Dim1    ==    BTSX
+    Sort Table By Column    ${table}    TimeDim    False
     RETURN    ${table}
